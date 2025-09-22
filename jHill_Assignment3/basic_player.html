@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Player</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 400px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2 { margin-top: 0; }
+        .player-controls { display: flex; align-items: center; gap: 12px; margin: 16px 0; }
+        .like-btn { background: #e0e0e0; border: none; border-radius: 4px; padding: 8px 16px; cursor: pointer; }
+        .like-btn.liked { background: #ff4081; color: #fff; }
+        .comments { margin-top: 24px; }
+        .comment { background: #f9f9f9; padding: 8px; border-radius: 4px; margin-bottom: 8px; }
+        .comment-form { display: flex; gap: 8px; margin-top: 12px; }
+        .comment-form input { flex: 1; padding: 6px; border-radius: 4px; border: 1px solid #ccc; }
+        .comment-form button { padding: 6px 12px; border-radius: 4px; border: none; background: #1976d2; color: #fff; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Basic Player</h2>
+        <div class="player-controls">
+            <button id="playBtn">Play</button>
+            <button id="pauseBtn">Pause</button>
+            <span id="status">Stopped</span>
+        </div>
+        <button id="likeBtn" class="like-btn">Like (<span id="likeCount">0</span>)</button>
+        <div class="comments">
+            <h3>Comments</h3>
+            <div id="commentList"></div>
+            <form id="commentForm" class="comment-form">
+                <input type="text" id="commentInput" placeholder="Add a comment..." required />
+                <button type="submit">Post</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Player controls
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const status = document.getElementById('status');
+        playBtn.onclick = () => { status.textContent = 'Playing'; };
+        pauseBtn.onclick = () => { status.textContent = 'Paused'; };
+
+        // Like button
+        const likeBtn = document.getElementById('likeBtn');
+        const likeCount = document.getElementById('likeCount');
+        let liked = false;
+        let count = 0;
+        likeBtn.onclick = () => {
+            liked = !liked;
+            likeBtn.classList.toggle('liked', liked);
+            count += liked ? 1 : -1;
+            likeCount.textContent = count;
+        };
+
+        // Comments
+        const commentForm = document.getElementById('commentForm');
+        const commentInput = document.getElementById('commentInput');
+        const commentList = document.getElementById('commentList');
+        commentForm.onsubmit = (e) => {
+            e.preventDefault();
+            const text = commentInput.value.trim();
+            if (text) {
+                const div = document.createElement('div');
+                div.className = 'comment';
+                div.textContent = text;
+                commentList.appendChild(div);
+                commentInput.value = '';
+            }
+        };
+    </script>
+</body>
+</html>
